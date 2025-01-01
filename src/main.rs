@@ -3,6 +3,9 @@ use std::fs::File;
 use std::io::Write;
 use rand::{self, random, seq::SliceRandom, Rng};
 
+const LENGTH: i32 = 32;
+
+
 fn main() {
     let minus = "abcdefghijklmnopqrstuvwxyz";
     let mayus = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -24,14 +27,10 @@ fn main() {
     let mut rng = rand::thread_rng();
     // aleatorización de chars
     chars.shuffle(&mut rng);
-    // un String es una collection de chars, por eso podemos usar el collect
-    charset = chars.iter().cloned().collect();
-
-    const LENGTH: i32 = 16;
 
     let password : String = (0..LENGTH).map(|_| {
-        let index  = rng.gen_range(0..charset.len());
-        charset.as_bytes()[index] as char // ¿Por qué? Básicamente porque solo tenemos caracteres unicodes
+        let index  = rng.gen_range(0..chars.len());
+        chars[index]
     }).collect();
 
     // Este archivo es solo para registrar las pws generadas
@@ -45,6 +44,4 @@ fn main() {
         Ok(_) => println!("La contraseña se ha generado con éxito: \n{}",password),
         Err(e) => println!("Error {}", e)
     }
-
-
 }
